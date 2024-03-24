@@ -10,7 +10,7 @@
     "lint": "eslint --ext ts,vue src/ --fix",
     "format": "prettier src/ --write",
     "stylelint": "stylelint 'src/**/*.{vue,css}' --fix",
-    "check": "vue-tsc && pnpm run format && pnpm run lint && pnpm run stylelint"
+    "check": "vue-tsc && npm run format && npm run lint && npm run stylelint"
   },
   "dependencies": {
     "axios": "^1.6.5",
