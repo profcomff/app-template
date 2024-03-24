@@ -99,8 +99,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: cd into folder
-        run: cd frontend
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
