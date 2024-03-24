@@ -8,7 +8,7 @@ from fastapi_sqlalchemy import DBSessionMiddleware
 from my_app_api import __version__
 from my_app_api.settings import get_settings
 
-from .click import router as click_router
+from .touch import router as touch_router
 
 
 settings = get_settings()
@@ -45,4 +45,4 @@ if settings.DOCS_DIR_PATH:
     logger.debug("Enabling Docs")
     app.mount("/docs", app=StaticFiles(directory=settings.DOCS_DIR_PATH, html=True), name="docs")
 
-app.include_router(click_router)
+app.include_router(touch_router)
