@@ -18,7 +18,6 @@ class TouchGet(WhoAmI):
     count: int
 
 
-# region routes
 @router.get("/whoami", response_model=WhoAmI)
 def whoami(auth=Depends(UnionAuth(allow_none=False))):
     return {"id": auth["id"]}
@@ -30,6 +29,3 @@ def touch(auth=Depends(UnionAuth(allow_none=False))):
         CLICKS[auth["id"]] = 0
     CLICKS[auth["id"]] += 1
     return {"id": auth["id"], "count": CLICKS[auth["id"]]}
-
-
-# endregion
