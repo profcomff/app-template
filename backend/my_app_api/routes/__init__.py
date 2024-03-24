@@ -12,12 +12,12 @@ from .touch import router as touch_router
 settings = get_settings()
 logger = logging.getLogger(__name__)
 app = FastAPI(
-    title='Мое приложение',
-    description='Бэкэнд приложения-примера',
+    title="Мое приложение",
+    description="Бэкэнд приложения-примера",
     version=__version__,
     # Отключаем нелокальную документацию
-    root_path=settings.ROOT_PATH if __version__ != 'dev' else '',
-    docs_url='/swagger',
+    root_path=settings.ROOT_PATH if __version__ != "dev" else "",
+    docs_url="/swagger",
     redoc_url=None,
 )
 
@@ -37,10 +37,16 @@ app.add_middleware(
 
 if settings.UI_DIR_PATH:
     logger.debug("Enabling UI")
-    app.mount("/ui", app=StaticFiles(directory=settings.UI_DIR_PATH, html=True), name="ui")
+    app.mount(
+        "/ui", app=StaticFiles(directory=settings.UI_DIR_PATH, html=True), name="ui"
+    )
 
 if settings.DOCS_DIR_PATH:
     logger.debug("Enabling Docs")
-    app.mount("/docs", app=StaticFiles(directory=settings.DOCS_DIR_PATH, html=True), name="docs")
+    app.mount(
+        "/docs",
+        app=StaticFiles(directory=settings.DOCS_DIR_PATH, html=True),
+        name="docs",
+    )
 
 app.include_router(touch_router)
