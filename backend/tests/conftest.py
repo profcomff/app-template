@@ -1,6 +1,5 @@
 import pytest
 from fastapi.testclient import TestClient
-
 from my_app_api.routes import app
 
 

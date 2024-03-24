@@ -4,7 +4,6 @@ from auth_lib.fastapi import UnionAuth
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
-
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix='/example', tags=['Example'])
 
