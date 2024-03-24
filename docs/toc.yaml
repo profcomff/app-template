@@ -1,0 +1,5 @@
+title: Мое приложение
+href: index.yaml
+items:
+  - name: Документация API
+    href: pages/api.md

@@ -1,0 +1,9 @@
+title: Мое приложение
+description: Документария приложения-примера
+meta:
+  title: Метаданные
+  noIndex: true
+links:
+- title: Документация API
+  description: Список методов API в формате swagger
+  href: pages/api.md
