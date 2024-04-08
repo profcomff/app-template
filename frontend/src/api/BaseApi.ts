@@ -1,18 +1,21 @@
 import axios, { AxiosResponse } from 'axios';
 import queryString from 'query-string';
+import { useProfileStore } from '../store';
 
-export interface DefaultResponse {
-	status: string;
-	message: string;
-}
-
+const profileStore = useProfileStore();
 type Path = `/${string}` | '';
 
 export class BaseApi {
 	url: string;
 
-	constructor(path: Path) {
-		this.url = import.meta.env.VITE_API_URL + path;
+	constructor(path: Path, base: string = document.location.origin) {
+		this.url = base + path;
+	}
+
+	private ensureToken(): string | null {
+		if (!profileStore.token) profileStore.fromUrl();
+		if (profileStore.token) return profileStore.token;
+		return null;
 	}
 
 	protected async get<Response, Params = never>(
@@ -20,6 +23,10 @@ export class BaseApi {
 		params?: Partial<Params>,
 		headers: Record<string, string> = {},
 	): Promise<AxiosResponse<Response>> {
+		if (!headers.Authorization) {
+			const token = this.ensureToken();
+			if (token) headers.Authorization = token;
+		}
 		return axios.get<Response>(`${this.url}${path}`, {
 			params,
 			headers,
@@ -35,6 +42,10 @@ export class BaseApi {
 		params?: Params,
 		headers: Record<string, string> = {},
 	): Promise<AxiosResponse<Response>> {
+		if (!headers.Authorization) {
+			const token = this.ensureToken();
+			if (token) headers.Authorization = token;
+		}
 		return axios.post<Response, AxiosResponse<Response>, Body>(`${this.url}${path}`, body, { headers, params });
 	}
 
@@ -43,6 +54,10 @@ export class BaseApi {
 		params?: Params,
 		headers: Record<string, string> = {},
 	): Promise<AxiosResponse<Response>> {
+		if (!headers.Authorization) {
+			const token = this.ensureToken();
+			if (token) headers.Authorization = token;
+		}
 		return axios.delete<Response>(`${this.url}${path}`, { params, headers });
 	}
 
@@ -51,6 +66,10 @@ export class BaseApi {
 		body?: Body,
 		headers: Record<string, string> = {},
 	): Promise<AxiosResponse<Response>> {
+		if (!headers.Authorization) {
+			const token = this.ensureToken();
+			if (token) headers.Authorization = token;
+		}
 		return axios.patch<Response, AxiosResponse<Response>, Body>(`${this.url}${path}`, body, { headers });
 	}
 
@@ -58,7 +77,12 @@ export class BaseApi {
 		path: Path,
 		body?: Body,
 		params?: Params,
+		headers: Record<string, string> = {},
 	): Promise<AxiosResponse<Response>> {
+		if (!headers.Authorization) {
+			const token = this.ensureToken();
+			if (token) headers.Authorization = token;
+		}
 		return axios.put(`${this.url}${path}`, body, { params });
 	}
 }
