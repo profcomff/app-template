@@ -10,6 +10,7 @@ const showClickWarn = ref(false);
 const clickResult = ref<number | null>(null);
 
 onMounted(async () => {
+	// Get username
 	if (!profileStore.full_name && profileStore.id) {
 		const resp = await userdataUserApi.getById(profileStore.id);
 		if (resp.status != 200) {
@@ -30,10 +31,24 @@ onMounted(async () => {
 		}
 		profileStore.full_name = nameItem?.value ?? null;
 	}
+
+	// Get touch data
+	const resp = await touchMeApi.addTouch();
+	if (resp.status != 200) {
+		showClickWarn.value = true;
+		return;
+	}
+	const data = resp.data;
+	if (!data || !data.count) {
+		showClickWarn.value = true;
+		return;
+	}
+	clickResult.value = +data.count;
 });
 
 const makeClick = async () => {
-	const resp = await touchMeApi.touch();
+	// Make touch
+	const resp = await touchMeApi.addTouch();
 	if (resp.status != 200) {
 		showClickWarn.value = true;
 		return;
@@ -60,7 +75,7 @@ const makeClick = async () => {
 		</p>
 		<p>Твой id: {{ profileStore.id }}</p>
 		<div>
-			<button @click="makeClick">Нажми чтобы увидеть каунтер</button>
+			<button @click="makeClick">Нажми чтобы увеличить каунтер</button>
 			<h2 v-if="clickResult">
 				В сумме ты кликнул эту кнопку <span>{{ clickResult }}</span> раз
 			</h2>

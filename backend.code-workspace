@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "backend"
+		}
+	],
+	"extensions": {
+		"recommendations": [
+			"ms-python.python",
+		],
+	},
+	"settings": {
+		"git.openRepositoryInParentFolders": "always"
+	}
+}
