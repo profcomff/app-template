@@ -1,7 +1,7 @@
 import os
 from functools import lru_cache
 
-from pydantic import ConfigDict, DirectoryPath, PostgresDsn
+from pydantic import ConfigDict, PostgresDsn
 from pydantic_settings import BaseSettings
 
 
@@ -10,8 +10,6 @@ class Settings(BaseSettings):
 
     DB_DSN: PostgresDsn = "postgresql://postgres@localhost:5432/postgres"
     ROOT_PATH: str = "/" + os.getenv("APP_NAME", "")
-    UI_DIR_PATH: DirectoryPath | None = None
-    DOCS_DIR_PATH: DirectoryPath | None = None
 
     CORS_ALLOW_ORIGINS: list[str] = ["*"]
     CORS_ALLOW_CREDENTIALS: bool = True

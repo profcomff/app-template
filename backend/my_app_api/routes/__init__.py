@@ -35,18 +35,4 @@ app.add_middleware(
     allow_headers=settings.CORS_ALLOW_HEADERS,
 )
 
-if settings.UI_DIR_PATH:
-    logger.debug("Enabling UI")
-    app.mount(
-        "/ui", app=StaticFiles(directory=settings.UI_DIR_PATH, html=True), name="ui"
-    )
-
-if settings.DOCS_DIR_PATH:
-    logger.debug("Enabling Docs")
-    app.mount(
-        "/docs",
-        app=StaticFiles(directory=settings.DOCS_DIR_PATH, html=True),
-        name="docs",
-    )
-
 app.include_router(touch_router)
