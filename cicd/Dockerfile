@@ -38,4 +38,6 @@ COPY --from=build-ui /app/dist /app/ui
 
 RUN mkdir /usr/share/nginx/logs/ && touch /usr/share/nginx/logs/error.log
 
+RUN echo "nginx" >> /app/prestart.sh
+
 ENV GUNICORN_CMD_ARGS="-b 0.0.0.0:81 --log-level debug"
