@@ -32,8 +32,10 @@ COPY ./backend/${APP_NAME} /app/${APP_NAME}
 
 
 # Копирование собранных UI и документации в директории сервера
-ADD ./cicd/nginx.conf /etc/nginx/conf.d/default.conf
+ADD ./cicd/nginx.conf /etc/nginx/nginx.conf
 COPY --from=build-docs /app/ouput-folder /app/docs
 COPY --from=build-ui /app/dist /app/ui
+
+RUN mkdir /usr/share/nginx/logs/ && touch /usr/share/nginx/logs/error.log
 
 ENV GUNICORN_CMD_ARGS="-b 0.0.0.0:81 --log-level debug"
