@@ -22,6 +22,11 @@ ENV APP_VERSION=${APP_VERSION}
 ENV APP_NAME=my_app_api
 ENV APP_MODULE=${APP_NAME}.routes:app
 
+# Устанавливает количество потоков, в которых будет работать gunicorn
+# Если установить больше 1, то приложение будет работать в многопоточном режиме
+# В этом режиме нельзя использовать глобальные переменные, т.к. они будут уникальными для каждого потока
+ENV MAX_WORKERS=1
+
 COPY ./backend/requirements.txt /app/
 RUN apt update && apt install -y nginx && pip install -U -r /app/requirements.txt
 

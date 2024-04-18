@@ -25,6 +25,8 @@ def whoami(auth=Depends(UnionAuth(allow_none=False))):
 
 @router.get("/touch", response_model=TouchGet)
 def touch(auth=Depends(UnionAuth(allow_none=False))):
+    if auth["id"] not in CLICKS:
+        CLICKS[auth["id"]] = 0
     return {"id": auth["id"], "count": CLICKS[auth["id"]]}
 
 

@@ -33,7 +33,7 @@ onMounted(async () => {
 	}
 
 	// Get touch data
-	const resp = await touchMeApi.addTouch();
+	const resp = await touchMeApi.getTouch();
 	if (resp.status != 200) {
 		showClickWarn.value = true;
 		return;
@@ -68,7 +68,7 @@ const makeClick = async () => {
 			Hello<span v-if="profileStore.full_name">, {{ profileStore.full_name }}</span
 			>!
 		</h1>
-		<p>
+		<p v-if="!profileStore.full_name">
 			Не удалось получить твое имя из
 			<a href="https://api.profcomff.com/?urls.primaryName=userdata">Userdata API</a>
 			=(

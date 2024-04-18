@@ -10,10 +10,10 @@ class TouchMeApi extends BaseApi {
 		super('', import.meta.env.VITE_API_BASE_URL ?? document.location.origin);
 	}
 	public async getTouch() {
-		return this.get<TouchResponse>('/touch');
+		return this.get<TouchResponse>('/example/touch');
 	}
 	public async addTouch() {
-		return this.post<TouchResponse>('/touch');
+		return this.post<TouchResponse>('/example/touch');
 	}
 }
 
