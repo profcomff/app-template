@@ -60,12 +60,14 @@ const makeClick = async () => {
 	}
 	clickResult.value = +data.count;
 };
+
+const location = document.location.origin + "/docs/";
 </script>
 
 <template>
 	<div>
 		<h1 class="text-h1">
-			Hello<span v-if="profileStore.full_name">, {{ profileStore.full_name }}</span
+			Привет<span v-if="profileStore.full_name">, {{ profileStore.full_name }}</span
 			>!
 		</h1>
 		<p v-if="!profileStore.full_name">
@@ -79,6 +81,9 @@ const makeClick = async () => {
 			<h2 v-if="clickResult">
 				В сумме ты кликнул эту кнопку <span>{{ clickResult }}</span> раз
 			</h2>
+		</div>
+		<div>
+			<p>Документация к этому коду находится по адресу <a href="/docs/">{{ location }}</a></p>
 		</div>
 	</div>
 </template>
