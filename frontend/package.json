@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "docker-build": "vue-tsc && vite build --base=/ui/",
+    "docker-build": "vue-tsc && vite build --base=/ui",
     "preview": "vite preview",
     "lint": "eslint --ext ts,vue src/ --fix",
     "format": "prettier src/ --write",
