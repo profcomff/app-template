@@ -14,8 +14,10 @@ onMounted(() => {
 		<RouterView />
 	</main>
 	<footer>
-		Made by <img src="https://app.profcomff.com/favicon.png" class="logo" /> in association with
-		<img src="https://dyakov.space/files/Icon.svg" class="logo" />
+		Made by
+		<a href="https://app.profcomff.com"><img src="https://app.profcomff.com/favicon.png" class="logo" /></a>
+		in association with
+		<a href="https://dyakov.space"><img src="https://dyakov.space/files/Icon.svg" class="logo" /></a>
 	</footer>
 </template>
 
