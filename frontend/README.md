@@ -48,3 +48,5 @@ npm run dev
     в этих файлах хранится код взаимодействия с [Auth API](https://api.profcomff.com/?urls.primaryName=auth)
     и [Userdata API](https://api.profcomff.com/?urls.primaryName=userdata), позволяющие получить
     информацию о текущем пользователе.
+
+- По умолчанию используется тестовая среда для общения с API Твой ФФ! Данное поведение меняется в файле `.env`: https://github.com/profcomff/app-template/blob/main/frontend/.env
