@@ -40,7 +40,7 @@ app.add_middleware(
 @app.get("/")
 def redirect(request: Request):
     url = URL(
-        path='/ui/',
+        path="/ui/",
         query=request.url.components.query,
         fragment=request.url.components.fragment,
     )

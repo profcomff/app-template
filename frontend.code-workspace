@@ -22,7 +22,7 @@
 			{
 				"label": "Configure",
 				"type": "shell",
-				"command": "pnpm install",
+				"command": "npm install",
 			},
 			{
 				"label": "Run local",
