@@ -4,13 +4,11 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from fastapi_sqlalchemy import DBSessionMiddleware
-from starlette.datastructures import URL
-
 from my_app_api import __version__
 from my_app_api.settings import get_settings
+from starlette.datastructures import URL
 
 from .touch import router as touch_router
-
 
 settings = get_settings()
 logger = logging.getLogger(__name__)
