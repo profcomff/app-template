@@ -61,7 +61,7 @@ const makeClick = async () => {
 	clickResult.value = +data.count;
 };
 
-const location = document.location.origin + "/docs/";
+const location = document.location.origin + '/docs/';
 </script>
 
 <template>
@@ -83,7 +83,9 @@ const location = document.location.origin + "/docs/";
 			</h2>
 		</div>
 		<div>
-			<p>Документация к этому коду находится по адресу <a href="/docs/">{{ location }}</a></p>
+			<p>
+				Документация к этому коду находится по адресу <a href="/docs/">{{ location }}</a>
+			</p>
 		</div>
 	</div>
 </template>
