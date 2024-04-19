@@ -6,11 +6,4 @@ services:
       context: ..
       dockerfile: ./cicd/Dockerfile
     ports:
-      - 8080:80
-
-  database:
-    image: postgres:15
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
+      - 80:80

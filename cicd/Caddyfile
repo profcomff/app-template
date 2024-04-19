@@ -1,0 +1,7 @@
+{
+    email name@example.com
+}
+
+app.example.com {
+    reverse_proxy http://app:80
+}
