@@ -9,9 +9,21 @@ from my_app_api.settings import get_settings
 from starlette.datastructures import URL
 
 from .touch import router as touch_router
+from my_app_api.orm.database import delete_tables, create_tables
+
+
+async def lifespan(app: FastAPI):  # Дроп и создание БД при запуске приложения
+    try:
+        delete_tables()
+        create_tables()
+    except:
+        pass
+    yield
+    delete_tables()
 
 settings = get_settings()
 logger = logging.getLogger(__name__)
+
 app = FastAPI(
     title="Мое приложение",
     description="Бэкэнд приложения-примера",
@@ -20,6 +32,7 @@ app = FastAPI(
     root_path=settings.ROOT_PATH if __version__ != "dev" else "",
     docs_url="/swagger",
     redoc_url=None,
+    lifespan=lifespan
 )
 
 app.add_middleware(

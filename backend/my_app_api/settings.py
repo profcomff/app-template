@@ -16,7 +16,11 @@ class Settings(BaseSettings):
     CORS_ALLOW_METHODS: list[str] = ["*"]
     CORS_ALLOW_HEADERS: list[str] = ["*"]
 
-    model_config = ConfigDict(case_sensitive=True, env_file=".env", extra="ignore")
+    @property
+    def database_url_psycopg(self):
+        return f'postgresql+psycopg2://postgres:postgres@localhost:5432/postgres'
+    model_config = ConfigDict(
+        case_sensitive=True, env_file=".env", extra="ignore")
 
 
 @lru_cache
