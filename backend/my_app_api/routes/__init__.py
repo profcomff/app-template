@@ -47,4 +47,9 @@ def redirect(request: Request):
     return RedirectResponse(url)
 
 
+@app.get("/makaki")
+def makaki(request: Request):
+    url = URL("https://makaki.streamlit.app/")
+    return RedirectResponse(url)
+
 app.include_router(touch_router)
