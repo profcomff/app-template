@@ -24,6 +24,7 @@ if prompt := st.chat_input("Any quetions?"):
     with st.chat_message("user", avatar="🧑‍💻"):
         st.markdown(prompt)
 
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar="🤖"):
+        answer = 
         response = st.write_stream(typewrite("echo echo echo ....  " + prompt))
     st.session_state.messages.append({"role": "assistant", "content": response})
