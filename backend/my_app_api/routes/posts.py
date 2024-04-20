@@ -1,6 +1,8 @@
 import logging
 
 from auth_lib.fastapi import UnionAuth
+from my_app_api.orm.database import get_async_session
+from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends
 from typing import Annotated
 from fastapi.responses import JSONResponse
@@ -13,21 +15,23 @@ router = APIRouter(prefix="/posts", tags=["Posts"])
 
 
 @router.get("/{post_id}")
-def get_one_post(
+async def get_one_post(
+    session: Annotated[AsyncSession, Depends(get_async_session)],
     post_id: int,
     auth=Depends(UnionAuth(allow_none=False))
 ) -> SPost:
-    post = PostRepository.get_one_post(post_id, auth)
+    post = await PostRepository.get_one_post(session, post_id, auth)
     return post
 
 
 @router.post("/")
-def create_post(
+async def create_post(
+    session: Annotated[AsyncSession, Depends(get_async_session)],
     post: Annotated[SPostAdd, Depends(SPostAdd)],
     picture: str | None = None,
     auth=Depends(UnionAuth(allow_none=False))
 ) -> dict:
-    post_id = PostRepository.add_post(post, picture, auth)
+    post_id = await PostRepository.add_post(session, post, picture, auth)
     return JSONResponse(
         status_code=201,
         content={'post_id': post_id}
@@ -35,26 +39,32 @@ def create_post(
 
 
 @router.get("/")
-def get_posts(
-        params: Annotated[SPostGetAll, Depends(SPostGetAll)],
-        auth=Depends(UnionAuth(allow_none=False))
+async def get_posts(
+    session: Annotated[AsyncSession, Depends(get_async_session)],
+    params: Annotated[SPostGetAll, Depends(SPostGetAll)],
+    auth=Depends(UnionAuth(allow_none=False))
 ) -> list[SPost]:
-    posts = PostRepository.get_posts(params, auth)
+    posts = await PostRepository.get_posts(session, params, auth)
     return posts
 
 
 @router.delete('/{post_id}')
-def delete_post(post_id: int, auth=Depends(UnionAuth(allow_none=False))) -> dict:
-    PostRepository.delete_post(post_id, auth)
+async def delete_post(
+    session: Annotated[AsyncSession, Depends(get_async_session)],
+    post_id: int,
+    auth=Depends(UnionAuth(allow_none=False))
+):
+    await PostRepository.delete_post(session, post_id, auth)
 
 
 @router.patch('/{post_id}')
-def patch_post(
+async def patch_post(
+    session: Annotated[AsyncSession, Depends(get_async_session)],
     post_id: int,
     post: Annotated[SPostPatch, Depends(SPostPatch)],
     auth=Depends(UnionAuth(allow_none=False))
 ) -> dict:
-    PostRepository.patch_post(post_id, post, auth)
+    await PostRepository.patch_post(session, post_id, post, auth)
     return JSONResponse(
         status_code=201,
         content={'detail': 'ok'}

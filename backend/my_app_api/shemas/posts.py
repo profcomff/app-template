@@ -19,6 +19,7 @@ class SPost(BaseModel):
     title: str
     # picture:
     description: str
+    is_active: bool
     event_date: datetime
     created_at: datetime
     updated_at: datetime
