@@ -4,7 +4,7 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from transformers import pipeline, AutoTokenizer
 from optimum.onnxruntime import ORTModelForQuestionAnswering
 
-from config import name_emb_model, name_qa_model, data_list
+from .config import name_emb_model, name_qa_model, data_list
 
 def init_qa_model(name_qa_model: str):
     model = ORTModelForQuestionAnswering.from_pretrained(name_qa_model, from_transformers=True)
