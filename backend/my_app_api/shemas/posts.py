@@ -1,5 +1,7 @@
 from datetime import datetime
 from pydantic import BaseModel
+from fastapi import UploadFile
+
 
 
 class SPostGetAll(BaseModel):
@@ -11,7 +13,7 @@ class SPostAdd(BaseModel):
     title: str
     descriprion: str
     event_date: str  # парсить в datetime
-    # picture: str | None = None
+    picture: UploadFile | None = None
 
 
 class SPost(BaseModel):
