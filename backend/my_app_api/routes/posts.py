@@ -25,7 +25,8 @@ def create_post(
     post: Annotated[SPostAdd, Depends(SPostAdd)],
     auth=Depends(UnionAuth(allow_none=False))
 ) -> dict:
-    pass
+    post_id = PostRepository.add_post(post, auth)
+    return {'post_id': post_id}
 
 
 @router.get("/")
@@ -33,7 +34,8 @@ def get_posts(
         params: Annotated[SPostGetAll, Depends(SPostGetAll)],
         auth=Depends(UnionAuth(allow_none=False))
 ) -> list[SPost]:
-    pass
+    posts = PostRepository.get_posts(params, auth)
+    return posts
 
 
 @router.delete('/{post_id}')

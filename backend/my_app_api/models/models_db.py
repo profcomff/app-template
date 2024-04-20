@@ -19,7 +19,7 @@ class PostOrm(Model):
     title: Mapped[str]
     picture_id: Mapped[int]
     description: Mapped[str]
-    event_date: Mapped[datetime]
+    event_date: Mapped[str]
     is_active: Mapped[bool]
 
     created_at: Mapped[datetime] = mapped_column(

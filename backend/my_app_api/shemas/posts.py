@@ -9,15 +9,16 @@ class SPostGetAll(BaseModel):
 
 class SPostAdd(BaseModel):
     title: str
-    descriprion: str
+    description: str
     event_date: str  # парсить в datetime
-    # picture: str | None = None
+    is_active: bool = True
+    picture_id: int | None = None
 
 
 class SPost(BaseModel):
     post_id: int
     title: str
     # picture:
-    descriprion: str
-    event_date: datetime
+    description: str
+    event_date: str
     created_at: datetime
