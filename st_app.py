@@ -1,5 +1,5 @@
 import streamlit as st
-from bot import init_model
+import bot
 import time
 import random
 
@@ -7,13 +7,14 @@ import random
 def typewrite(message: str):
     for s in message:
         yield s
-        time.sleep(random.random() * 0.1)
+        time.sleep(random.random() * 0.05)
 
 
 st.title("MAKAKI V ATAKE")
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
+    st.session_state.uid = random.randint(0, 1 << 64)
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
@@ -25,6 +26,6 @@ if prompt := st.chat_input("Any quetions?"):
         st.markdown(prompt)
 
     with st.chat_message("assistant", avatar="🤖"):
-        # answer = 
-        response = st.write_stream(typewrite("echo echo echo ....  " + prompt))
+        answer = bot.answer(prompt, st.session_state.uid)
+        response = st.write_stream(typewrite(answer))
     st.session_state.messages.append({"role": "assistant", "content": response})
