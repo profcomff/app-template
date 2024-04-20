@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from typing import Annotated
 from fastapi.responses import JSONResponse
 
-from my_app_api.shemas.posts import SPostAdd, SPostGetAll, SPost
+from my_app_api.shemas.posts import SPostAdd, SPostGetAll, SPost, SPostPatch
 from my_app_api.orm.repository import PostRepository
 
 logger = logging.getLogger(__name__)
@@ -48,6 +48,14 @@ def delete_post(post_id: int, auth=Depends(UnionAuth(allow_none=False))) -> dict
     PostRepository.delete_post(post_id, auth)
 
 
-@router.post('/get')
-def f():
-    return {'status': "ok"}
+@router.patch('/{post_id}')
+def patch_post(
+    post_id: int,
+    post: Annotated[SPostPatch, Depends(SPostPatch)],
+    auth=Depends(UnionAuth(allow_none=False))
+) -> dict:
+    PostRepository.patch_post(post_id, post, auth)
+    return JSONResponse(
+        status_code=201,
+        content={'detail': 'ok'}
+    )

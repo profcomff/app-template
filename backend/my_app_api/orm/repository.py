@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from sqlalchemy import delete, or_, select
 
 from my_app_api.models.models_db import PostOrm
-from my_app_api.shemas.posts import SPost, SPostAdd, SPostGetAll
+from my_app_api.shemas.posts import SPost, SPostAdd, SPostGetAll, SPostPatch
 from my_app_api.orm.database import new_session
 from my_app_api.utils.date_refactor import date_refactor
 
@@ -96,4 +96,42 @@ class PostRepository:
 
             stmt = delete(PostOrm).filter(PostOrm.post_id == post_id)
             session.execute(stmt)
+            session.commit()
+
+    @staticmethod
+    def patch_post(post_id: int, patch_post: SPostPatch, auth):
+        check_permission(auth)
+        with new_session() as session:
+            post = session.get(PostOrm, post_id)
+
+            # Verify 1 If banner by id exists
+            if post:
+                if patch_post.description is not None:
+                    post.description = patch_post.description
+                if patch_post.title is not None:
+                    post.title = patch_post.title
+                if patch_post.event_date is not None:
+                    try:
+                        post.event_date = date_refactor(patch_post.event_date)
+                    except:
+                        raise HTTPException(
+                            status_code=422, detail='Неверный формат даты')
+                if patch_post.is_active is not None:
+                    post.is_active = patch_post.is_active
+            else:
+                raise HTTPException(status_code=404, detail='Баннер не найден')
+
+            # Verify 2 If banner with same options exists
+            query = (
+                select(PostOrm)
+                .where(PostOrm.post_id != post.post_id)
+                .where(PostOrm.title == post.title)
+                .where(PostOrm.event_date == post.event_date)
+            )
+            result = session.execute(query)
+            if result.scalars().all():
+                raise HTTPException(
+                    status_code=400, detail='Похожее мероприятие уже есть')
+
+            session.flush()
             session.commit()

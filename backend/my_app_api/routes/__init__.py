@@ -61,5 +61,5 @@ def redirect(request: Request):
     return RedirectResponse(url)
 
 
-app.include_router(touch_router)
+# app.include_router(touch_router)
 app.include_router(posts_router)
