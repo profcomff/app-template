@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     @property
     def database_url_psycopg(self):
-        return f'postgresql+psycopg2://postgres:postgres@localhost:5432/postgres'
+        return f'postgresql+psycopg2://postgres:postgres@events_db:5432/postgres'
     model_config = ConfigDict(
         case_sensitive=True, env_file=".env", extra="ignore")
 

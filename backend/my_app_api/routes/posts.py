@@ -2,49 +2,40 @@ import logging
 
 from auth_lib.fastapi import UnionAuth
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
 from typing import Annotated
 
+from my_app_api.shemas.posts import SPostAdd, SPostGetAll, SPost
+from my_app_api.orm.repository import PostRepository
+
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/example", tags=["Example"])
+router = APIRouter(prefix="/posts", tags=["Posts"])
 
 
+@router.get("/{post_id}")
+def get_one_post(
+    post_id: int,
+    auth=Depends(UnionAuth(allow_none=False))
+) -> SPost:
+    post = PostRepository.get_one_post(post_id, auth)
+    return post
 
-class Post(BaseModel):
-    post_id: int | None = None
-    title: str | None = None
-    description: str | None = None
-    picture_id: int | None = None
-    create_date: str | None = None
-    event_date: str | None = None
 
-
-@router.post("/posts")
-def create_post(post: Annotated[], auth=Depends(UnionAuth(allow_none=False))):
+@router.post("/")
+def create_post(
+    post: Annotated[SPostAdd, Depends(SPostAdd)],
+    auth=Depends(UnionAuth(allow_none=False))
+) -> dict:
     pass
 
 
-@router.delete("/posts/{post_id}/{user_id}")
-def delete_post(post: Annotated[DeletePost, Depends(DeletePost)], auth=Depends(UnionAuth(allow_none=False))):
+@router.get("/")
+def get_posts(
+        params: Annotated[SPostGetAll, Depends(SPostGetAll)],
+        auth=Depends(UnionAuth(allow_none=False))
+) -> list[SPost]:
     pass
 
 
-@router.get("/posts")
-def get_posts(auth=Depends(UnionAuth(allow_none=False))):
-    pass
-
-
-@router.get("/posts/{post_id}")
-def get_post(post: Annotated[GetPost, Depends(GetPost)], auth=Depends(UnionAuth(allow_none=False))):
-    pass
-
-
-@router.get("/posts/reaction")
-def get_reaction(auth=Depends(UnionAuth(allow_none=False))):
-    pass
-
-
-@router.delete("/posts/reaction/{reaction_id}")
-def delete_reaction(reaction: Annotated[DeleteReaction, Depends(DeleteReaction)],
-                    auth=Depends(UnionAuth(allow_none=False))):
+@router.delete('/{post_id}')
+def delete_post(post_id: int, auth=Depends(UnionAuth(allow_none=False))) -> dict:
     pass

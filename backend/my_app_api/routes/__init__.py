@@ -9,6 +9,7 @@ from my_app_api.settings import get_settings
 from starlette.datastructures import URL
 
 from .touch import router as touch_router
+from .posts import router as posts_router
 from my_app_api.orm.database import delete_tables, create_tables
 
 
@@ -61,3 +62,4 @@ def redirect(request: Request):
 
 
 app.include_router(touch_router)
+app.include_router(posts_router)

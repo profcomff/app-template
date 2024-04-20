@@ -2,7 +2,7 @@ version: "3"
 
 services:
   app:
-    container_name: _app
+    container_name: events_app
     build:
       context: ..
       dockerfile: ./cicd/Dockerfile
@@ -13,9 +13,9 @@ services:
   
   database:
     image: postgres:15
-    container_name: _db
+    container_name: events_db
     ports:
-      - 5432:5432  # База данных будет доступна из интернета, не забывайте выставить пароль!
+      - 5433:5432  # База данных будет доступна из интернета, не забывайте выставить пароль!
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
 
