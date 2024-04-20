@@ -7,7 +7,7 @@ nltk.download('popular')
 token = 'Токен для связи с тг ботом'
 name_qa_model = "timpal0l/mdeberta-v3-base-squad2"
 name_emb_model = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-root = "/content/data_state"
+root = "bot/data"
 replace_dict = {'посвят': 'Посвящение дня физика',
                 'посвящ': 'Посвящение дня физика',
                 'время': 'часы',
@@ -38,5 +38,3 @@ with open('./data_base/dict_links.json', 'r', encoding='utf-8') as f:
 
 with open('./data_base/lemmatized_profanities.pkl', 'rb') as f:
     profanities = pickle.load(f)
-
-
