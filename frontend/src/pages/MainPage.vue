@@ -83,6 +83,9 @@ const location = document.location.origin + '/docs/';
 			</h2>
 		</div>
 		<div>
+			<a href="/makaki">MAKAKI V ATAKE</a>
+		</div>
+		<div>
 			<p>
 				Документация к этому коду находится по адресу <a href="/docs/">{{ location }}</a>
 			</p>
