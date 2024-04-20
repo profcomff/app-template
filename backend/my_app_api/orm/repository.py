@@ -1,3 +1,4 @@
+from my_app_api.utils.check_permission import check_permission
 from sqlalchemy.dialects.postgresql import array
 from fastapi import HTTPException
 from sqlalchemy import delete, or_, select
@@ -5,6 +6,7 @@ from sqlalchemy import delete, or_, select
 from my_app_api.models.models_db import PostOrm
 from my_app_api.shemas.posts import SPost, SPostAdd, SPostGetAll
 from my_app_api.orm.database import new_session
+from my_app_api.utils.date_refactor import date_refactor
 
 
 class PostRepository:
@@ -27,19 +29,36 @@ class PostRepository:
             return banner
 
     @staticmethod
-    def add_post(data: SPostAdd, auth):
+    def add_post(data: SPostAdd, picture: str, auth) -> int:
+        check_permission(auth)
+
+        # refactor date
+        try:
+            data.event_date = date_refactor(data.event_date)
+        except:
+            raise HTTPException(
+                status_code=422, detail='Неверный формат даты')
+
         with new_session() as session:
             query = (
                 select(PostOrm)
                 .where(PostOrm.title == data.title)
-                .where(PostOrm.is_active)
+                .where(PostOrm.event_date == data.event_date)
             )
             result = session.execute(query)
             if result.scalars().all():
                 raise HTTPException(
                     status_code=400, detail='Похожее мероприятие уже есть')
 
+            # Upload picture
+            if picture:
+                picture = picture
+            else:
+                picture = "url://no_pic.png"
+
             post_dict = data.model_dump()
+            post_dict.update({'picture': picture})
+
             post = PostOrm(**post_dict)
             session.add(post)
             session.flush()
@@ -64,3 +83,17 @@ class PostRepository:
                 post_orm, from_attributes=True) for post_orm in post_models]
 
             return post_schemas
+
+    @staticmethod
+    def delete_post(post_id: int, auth):
+        check_permission(auth)
+        with new_session() as session:
+            # Verify if banner is not exist
+            post = session.get(PostOrm, (post_id, ))
+            if not post:
+                raise HTTPException(
+                    status_code=404, detail='Мероприятие не найдено')
+
+            stmt = delete(PostOrm).filter(PostOrm.post_id == post_id)
+            session.execute(stmt)
+            session.commit()
