@@ -1,47 +1,29 @@
-import React, { useEffect, useState } from "react";
-import axios from 'axios';
-import { Button, IconButton, Input, Popover, PopoverContent, PopoverHandler } from "@material-tailwind/react";
-import { ArrowRightIcon, ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import React, { useState } from "react";
+import {
+    Input,
+    Popover,
+    PopoverHandler,
+    PopoverContent,
+    Button,
+} from "@material-tailwind/react";
 import { format } from "date-fns";
-
-import { CardDefault } from "../EventCard";
 import { DayPicker } from "react-day-picker";
+import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 
-const EventsSection = () => {
-    const [events, setEvents] = useState([])
-    const [active, setActive] = React.useState(1);
+const AddEvent = () => {
     const [date, setDate] = useState();
-
-
-    const getItemProps = (index) =>
-    ({
-        variant: active === index ? "filled" : "text",
-        color: "gray",
-        onClick: () => setActive(index),
-    });
-
-    const next = () => {
-        if (active === 5) return;
-
-        setActive(active + 1);
-    };
-
-    const prev = () => {
-        if (active === 1) return;
-
-        setActive(active - 1);
-    };
-
-    useEffect(() => {
-        axios.get("http://79.174.91.168/posts", {
-            headers: {
-                'Authorization': 'eBqaCuBSlrIpCpFESwwGfSXndwhqAicpsOOgJlDxTWSGypBgLUwEdUwTQaaXVJDY'
-            }
-        }).then(({ data }) => setEvents(data))
-    }, [])
+    const [title, setTitle] = useState('');
+    const [descr, setDescr] = useState('');
+    console.log(date, title, descr);
     return (
         <div className="mx-auto max-w-screen-xl px-6 py-3">
-            <h3>Select by date:</h3>
+            <h1>Add Event:</h1>
+            <div className="w-72">
+                <Input label="Event Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+            </div>
+            <div className="w-72 pt-6">
+                <Input label="Event Description" value={descr} onChange={(e) => setDescr(e.target.value)} />
+            </div>
             <div className="py-6 w-72">
                 <Popover placement={`${window.innerWidth < 768 ? 'bottom' : 'right'}`}>
                     <PopoverHandler>
@@ -93,38 +75,9 @@ const EventsSection = () => {
                     </PopoverContent>
                 </Popover>
             </div>
-            <div className="grid grid-cols-1 mx-auto gap-4 md:grid-cols-3">
-                <CardDefault />
-                <CardDefault />
-                <CardDefault />
-            </div>
-            <div className="flex items-center gap-1 md:gap-4 mt-6">
-                <Button
-                    variant="text"
-                    className="flex items-center gap-2 "
-                    onClick={prev}
-                    disabled={active === 1}
-                >
-                    <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
-                </Button>
-                <div className="flex items-center gap-2">
-                    <IconButton {...getItemProps(1)}>1</IconButton>
-                    <IconButton {...getItemProps(2)}>2</IconButton>
-                    ...
-                    <IconButton {...getItemProps(5)}>5</IconButton>
-                </div>
-                <Button
-                    variant="text"
-                    className="flex items-center gap-2"
-                    onClick={next}
-                    disabled={active === 5}
-                >
-                    Next
-                    <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-                </Button>
-            </div>
+            <Button>Submit</Button>
         </div>
     );
 }
 
-export default EventsSection;
+export default AddEvent;

@@ -6,6 +6,7 @@ import {
     Typography,
     Button,
 } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
 export function CardDefault() {
     return (
@@ -27,7 +28,11 @@ export function CardDefault() {
                 </Typography>
             </CardBody>
             <CardFooter className="pt-0">
-                <Button>Read More</Button>
+                <Link to={'/events/1'}>
+                    <Button>
+                        Read More
+                    </Button>
+                </Link>
             </CardFooter>
         </Card>
     );
