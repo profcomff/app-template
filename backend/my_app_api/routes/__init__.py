@@ -8,18 +8,32 @@ from my_app_api import __version__
 from my_app_api.settings import get_settings
 from starlette.datastructures import URL
 
-from .touch import router as touch_router
+from .posts import router as posts_router
+from my_app_api.orm.database import delete_tables, create_tables
+
+
+async def lifespan(app: FastAPI):  # Дроп и создание БД при запуске приложения
+    try:
+        # await delete_tables()
+        await create_tables()
+        pass
+    except:
+        pass
+    yield
+    # await delete_tables()
 
 settings = get_settings()
 logger = logging.getLogger(__name__)
+
 app = FastAPI(
-    title="Мое приложение",
-    description="Бэкэнд приложения-примера",
+    title="eventsMSU",
+    description="Лента мероприятий для студентов МГУ",
     version=__version__,
     # Отключаем нелокальную документацию
     root_path=settings.ROOT_PATH if __version__ != "dev" else "",
     docs_url="/swagger",
     redoc_url=None,
+    lifespan=lifespan
 )
 
 app.add_middleware(
@@ -47,4 +61,4 @@ def redirect(request: Request):
     return RedirectResponse(url)
 
 
-app.include_router(touch_router)
+app.include_router(posts_router)
