@@ -1,16 +1,31 @@
-from msilib.schema import File
+# from msilib.schema import File
+from fastapi import HTTPException
+import aiofiles
+import os
 
-PATH = "backend/pictures/"
+PATH = "pictures/"
 FILE_NUMBER = 0
 
 
-def safe_file(file: File):
-    global FILE_NUMBER
-    with open(f'{PATH}{FILE_NUMBER}.png', "wr") as f:
-        f.write(file)
-    FILE_NUMBER += 1
-    return FILE_NUMBER - 1
+async def safe_file(file):
+    if file is None:
+        return 'uploads/no_pic.png'
 
+    if not file.filename.split('.')[0] or not file.filename.lower().endswith('.png'):
+        raise HTTPException(
+            status_code=400, detail="Непраильное название, либо можно только расширение .png")
 
-def get_file_path(number: int):
-    return f'{PATH}{number}.png' if number < FILE_NUMBER else None
+    file_path = os.path.join("uploads", file.filename)
+
+    if os.path.exists(file_path):
+        dir_files = os.listdir('uploads')
+        file_path += str(sum([file.filename in dir_file for dir_file in dir_files]))
+
+    async with aiofiles.open(file_path, "wb") as buffer:
+        while True:
+            chunk = await file.read(1024)
+            if not chunk:
+                break
+            await buffer.write(chunk)
+
+    return file_path

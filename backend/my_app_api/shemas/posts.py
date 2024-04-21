@@ -17,7 +17,7 @@ class SPostAdd(BaseModel):
 class SPost(BaseModel):
     post_id: int
     title: str
-    # picture:
+    picture_url: str
     description: str
     is_active: bool
     event_date: datetime

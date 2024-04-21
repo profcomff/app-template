@@ -17,7 +17,7 @@ class PostOrm(Model):
 
     # Extra columns
     title: Mapped[str]
-    picture: Mapped[str]
+    picture_url: Mapped[str]
     description: Mapped[str]
     event_date: Mapped[datetime]
     is_active: Mapped[bool]

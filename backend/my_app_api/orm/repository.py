@@ -1,6 +1,7 @@
+from my_app_api.utils.file_handle import safe_file
 from my_app_api.utils.check_permission import check_permission
 from sqlalchemy.dialects.postgresql import array
-from fastapi import HTTPException
+from fastapi import HTTPException, UploadFile
 from sqlalchemy import delete, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -30,7 +31,7 @@ class PostRepository:
         return banner
 
     @staticmethod
-    async def add_post(session: AsyncSession, data: SPostAdd, picture: str, auth) -> int:
+    async def add_post(session: AsyncSession, data: SPostAdd, picture, auth) -> int:
         check_permission(auth)
 
         # refactor date
@@ -51,13 +52,10 @@ class PostRepository:
                 status_code=400, detail='Похожее мероприятие уже есть')
 
         # Upload picture
-        if picture:
-            picture = picture
-        else:
-            picture = "url://no_pic.png"
+        picture_url = await safe_file(picture)
 
         post_dict = data.model_dump()
-        post_dict.update({'picture': picture})
+        post_dict.update({'picture_url': picture_url})
 
         post = PostOrm(**post_dict)
         session.add(post)

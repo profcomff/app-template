@@ -30,6 +30,8 @@ ENV MAX_WORKERS=1
 COPY ./backend/requirements.txt /app/
 RUN apt update && apt install -y nginx && pip install -U -r /app/requirements.txt
 
+RUN mkdir -p /app/uploads
+
 COPY ./backend/alembic.ini /alembic.ini
 COPY ./backend/migrations /migrations/
 

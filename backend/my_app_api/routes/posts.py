@@ -3,8 +3,8 @@ import logging
 from auth_lib.fastapi import UnionAuth
 from my_app_api.orm.database import get_async_session
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import APIRouter, Depends
-from typing import Annotated
+from fastapi import APIRouter, Depends, File, UploadFile
+from typing import Annotated, Optional
 from fastapi.responses import JSONResponse
 
 from my_app_api.shemas.posts import SPostAdd, SPostGetAll, SPost, SPostPatch
@@ -28,7 +28,7 @@ async def get_one_post(
 async def create_post(
     session: Annotated[AsyncSession, Depends(get_async_session)],
     post: Annotated[SPostAdd, Depends(SPostAdd)],
-    picture: str | None = None,
+    picture: Optional[UploadFile] = File(None),
     auth=Depends(UnionAuth(allow_none=False))
 ) -> dict:
     post_id = await PostRepository.add_post(session, post, picture, auth)
