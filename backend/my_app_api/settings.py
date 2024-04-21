@@ -7,8 +7,8 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     """Application settings"""
-
     DB_DSN: PostgresDsn = "postgresql://postgres@localhost:5432/postgres"
+    # DB_DSN: PostgresDsn = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     ROOT_PATH: str = "/" + os.getenv("APP_NAME", "")
 
     CORS_ALLOW_ORIGINS: list[str] = ["*"]
@@ -22,6 +22,7 @@ class Settings(BaseSettings):
 
     @property
     def database_url_asyncpg(self):
+        # return f'postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}'
         return f'postgresql+asyncpg://postgres:postgres@events_db:5432/postgres'
 
     model_config = ConfigDict(

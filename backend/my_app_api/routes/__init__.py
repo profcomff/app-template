@@ -14,12 +14,13 @@ from my_app_api.orm.database import delete_tables, create_tables
 
 async def lifespan(app: FastAPI):  # Дроп и создание БД при запуске приложения
     try:
-        await delete_tables()
+        # await delete_tables()
         await create_tables()
+        pass
     except:
         pass
     yield
-    await delete_tables()
+    # await delete_tables()
 
 settings = get_settings()
 logger = logging.getLogger(__name__)
