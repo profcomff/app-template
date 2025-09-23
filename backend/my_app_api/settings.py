@@ -11,6 +11,14 @@ class Settings(BaseSettings):
     DB_DSN: PostgresDsn = "postgresql://postgres@localhost:5432/postgres"
     ROOT_PATH: str = "/" + os.getenv("APP_NAME", "")
 
+    SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-here")
+    ALGORITHM = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+    UPLOAD_DIR = "my_app_api/static"
+    MAX_FILE_SIZE = 10 * 1024 * 1024
+    ALLOWED_DOCUMENT_TYPES = ["application/pdf", "image/jpeg", "image/png"]
+
     CORS_ALLOW_ORIGINS: list[str] = ["*"]
     CORS_ALLOW_CREDENTIALS: bool = True
     CORS_ALLOW_METHODS: list[str] = ["*"]

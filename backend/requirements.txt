@@ -1,5 +1,4 @@
 alembic
-auth-lib-profcomff[fastapi]
 fastapi
 fastapi-sqlalchemy
 gunicorn
@@ -8,3 +7,12 @@ pydantic[dotenv]
 pydantic-settings
 SQLAlchemy
 uvicorn
+
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
+python-dotenv
+aiosmtplib
+jinja2
+python-magic
+pillow
