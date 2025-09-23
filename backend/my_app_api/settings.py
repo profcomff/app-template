@@ -15,9 +15,9 @@ class Settings(BaseSettings):
     ALGORITHM = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-    UPLOAD_DIR = "my_app_api/static"
-    MAX_FILE_SIZE = 10 * 1024 * 1024
-    ALLOWED_DOCUMENT_TYPES = ["application/pdf", "image/jpeg", "image/png"]
+    UPLOAD_DIR = "my_app_api/static/documents"
+    ALLOWED_EXTENSIONS = {'.pdf', '.doc', '.docx', '.csv', '.xlsx', '.xls'}
+    MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB
 
     CORS_ALLOW_ORIGINS: list[str] = ["*"]
     CORS_ALLOW_CREDENTIALS: bool = True

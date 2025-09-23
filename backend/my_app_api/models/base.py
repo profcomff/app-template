@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import re
+import pandas as pd
+from typing import List, Dict, Any
 
-from sqlalchemy import not_
+from sqlalchemy import not_, inspect
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Query, Session, as_declarative, declared_attr
 
@@ -14,7 +16,7 @@ class Base:
     """Base class for all database entities"""
 
     @declared_attr
-    def __tablename__(cls) -> str:  # pylint: disable=no-self-argument
+    def __tablename__(cls) -> str:
         """Generate database table name automatically.
         Convert CamelCase class name to snake_case db table name.
         """
@@ -26,6 +28,19 @@ class Base:
             attrs.append(f"{c.name}={getattr(self, c.name)}")
         return "{}({})".format(c.__class__.__name__, ', '.join(attrs))
 
+    @classmethod
+    def get_column_names(cls) -> List[str]:
+        """Get all column names for the model"""
+        return [column.name for column in cls.__table__.columns]
+    
+    @classmethod
+    def from_csv_row(cls, row: Dict[str, Any]) -> Dict[str, Any]:
+        """Convert CSV row to model-compatible dictionary"""
+        result = {}
+        for column in cls.__table__.columns:
+            if column.name in row:
+                result[column.name] = row[column.name]
+        return result
 
 class BaseDbModel(Base):
     __abstract__ = True
@@ -36,6 +51,7 @@ class BaseDbModel(Base):
         session.add(obj)
         session.flush()
         return obj
+
 
     @classmethod
     def query(cls, *, with_deleted: bool = False, session: Session) -> Query:

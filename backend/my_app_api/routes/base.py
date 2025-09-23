@@ -4,13 +4,18 @@ from fastapi_sqlalchemy import DBSessionMiddleware
 from logger_middleware import LoggerMiddleware
 
 from my_app_api import __version__
-#from my_app_api.routes.admin import admin
-#from my_app_api.routes.editor import editor
+from my_app_api.routes.admin import admin
+from my_app_api.routes.editor import editor
 from my_app_api.routes.documents import documents
-from my_app_api.routes.profile import auth
-from my_app_api.routes.support import support
 from my_app_api.routes.auth import auth
 from my_app_api.settings import Settings, get_settings
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 settings: Settings = get_settings()
@@ -37,8 +42,10 @@ app.add_middleware(
     allow_headers=settings.CORS_ALLOW_HEADERS,
 )
 
-#app.include_router(lecturer)
-#app.include_router(comment)
+app.include_router(admin)
+app.include_router(editor)
+app.include_router(documents)
+app.include_router(auth)
 
 if __version__ != 'dev':
     app.add_middleware(LoggerMiddleware, service_id=settings.SERVICE_ID)
