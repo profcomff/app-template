@@ -1,5 +1,3 @@
-import datetime
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from ..database import get_db
@@ -12,21 +10,21 @@ auth = APIRouter(prefix="/auth", tags=["authentication"])
 @auth.post("/register", response_model=UserResponse)
 def register(user_data: UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter(
-        (User.user_login == user_data.username)
+        (User.email == user_data.email) | (User.username == user_data.username)
     ).first()
     
     if existing_user:
         raise HTTPException(
             status_code=400,
-            detail="Login already registered"
+            detail="Email or username already registered"
         )
     
 
     hashed_password = get_password_hash(user_data.password)
     user = User(
-        user_login=user_data.user_login,
-        first_name=first_name
-        last_name=user_data.full_name,
+        email=user_data.email,
+        username=user_data.username,
+        full_name=user_data.full_name,
         hashed_password=hashed_password
     )
     
@@ -43,7 +41,7 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
 
 @auth.post("/login", response_model=Token)
 def login(user_data: UserLogin, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.user_login == user_data.user_login).first()
+    user = db.query(User).filter(User.email == user_data.email).first()
     
     if not user or not verify_password(user_data.password, user.hashed_password):
         raise HTTPException(
