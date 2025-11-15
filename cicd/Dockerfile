@@ -30,6 +30,8 @@ ENV MAX_WORKERS=1
 COPY ./backend/requirements.txt /app/
 RUN apt update && apt install -y nginx && pip install -U -r /app/requirements.txt
 
+RUN mkdir -p /app/uploads
+
 COPY ./backend/alembic.ini /alembic.ini
 COPY ./backend/migrations /migrations/
 
@@ -46,3 +48,5 @@ RUN mkdir /usr/share/nginx/logs/ && touch /usr/share/nginx/logs/error.log
 RUN echo "#! /usr/bin/env sh\n\nnginx" > /app/prestart.sh
 
 ENV GUNICORN_CMD_ARGS="-b 0.0.0.0:81 --log-level debug"
+
+# CMD sh -c 'cd .. && alembic upgrade head'

@@ -1,52 +1,8 @@
-# Фронтенд приложения на Vue 3 + TypeScript
+# React + Vite
 
-Фронтенд (англ. front end, frontend) — презентационная часть web приложения, её пользовательский
-интерфейс и связанные с ним компоненты.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-В данном примере используется популярный фраемворк [Vue.js](https://vuejs.org/). Разработка ведется
-на языке TypeScript.
+Currently, two official plugins are available:
 
-## Зависимости
-- Node.js v18 – среда исполнения на языке JavaScript/TypeScript
-- NPM – консольный менеджер пакетов для установки библиотек (идет в поставке с Node.js)
-- Vue.js – фраемворк для разработки фронтенда
-- Vite – консольный менеджер для удобства работы с Vue.js
-
-
-## Разработка
-
-Для удобства разработки в VS Code создан [workspace](../frontend.code-workspace) с преднастроенными
-командами и рекомендованными расширениями для работы.
-
-Перед началом работы нужно установить зависимости командой
-```
-npm install
-```
-
-Для локального запуска необходимо выполнить команду
-```
-npm run dev
-```
-
-
-## Важные замечания по коду
-- Приложение предполагает, что вы запускаете его из Твой ФФ. Чтобы имитировать запуск из Твой ФФ:
-
-    1. Зарегистрируйтесь в тестовой среде «Твой ФФ!» по адресу https://app.test.profcomff.com/auth. Подтвердите аккаунт и войдите в пользователя (при необходимости).
-
-    2. Перейдите в панель администрирования https://app.test.profcomff.com/admin.
-
-    3. Нажмите кнопку «скопировать параметры приложения».
-
-    4. Подставьте полученную строку после адреса вашего приложения в браузере
-
-    Код, который обрабатывает данные пользователя из URL находится здесь: https://github.com/profcomff/app-template/blob/1070d4370d37529702d7499baeaf145ba4cd9e62/frontend/src/store/profileStore.ts#L15-L28
-
-
-- `./src/api/user/AuthApi.ts` и `./src/api/user/UserdataApi.ts`
-
-    в этих файлах хранится код взаимодействия с [Auth API](https://api.profcomff.com/?urls.primaryName=auth)
-    и [Userdata API](https://api.profcomff.com/?urls.primaryName=userdata), позволяющие получить
-    информацию о текущем пользователе.
-
-- По умолчанию используется тестовая среда для общения с API Твой ФФ! Данное поведение меняется в файле `.env`: https://github.com/profcomff/app-template/blob/main/frontend/.env
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
